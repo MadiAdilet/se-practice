@@ -1,7 +1,7 @@
 # Week 01 — Manual vs AI: Comparison
 
-**Name:** _[fill in your name]_
-**Group:** _[fill in your group]_
+**Name:**Madi
+**Group:** monday 16-19git status
 **Date:** 2026-09-13
 
 ---
