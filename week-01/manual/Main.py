@@ -1,4 +1,5 @@
-raw_marks = "88, 47, -5, 101, abc, 73, 50, , 100"
+raw_marks = "85, 23, 45, 90, 92, 101, -10, abc, 75, 60"
+raw_marks = raw_marks.split(",")
 valid_marks = []
 for item in raw_marks:
     try:
@@ -22,5 +23,5 @@ else:
     print(f"Максимальная оценка: {highest}")
     print(f"Минимальная оценка: {lowest}")
     print(f"Количество сдавших: {len(passing)}")
-    print(f"Процент сдачи: {pass_rate:.2f}%")
+    print(f"Процент сдачи: {pass_rate:.1f}%")
 
