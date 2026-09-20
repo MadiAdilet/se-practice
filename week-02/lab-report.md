@@ -92,20 +92,21 @@ no external libraries. Return code plus a short explanation.
 
 **What I appended to Prompt B:**
 
-```
-
-```
+Example: analyze_marks([40, 60, 80], 50) → average 60, highest 80, lowest 40,
+pass_rate 66.67. Include tests for: one mark, decimals, custom pass_mark, empty list,
+text value, and marks below 0 or above 100. State any remaining assumptions before
+the code.
 
 **Tests the AI wrote for itself** — how many, and which situations do they cover?
 
 | Situation | Covered by the AI's tests? |
 | --- | --- |
-| one mark | |
-| decimals | |
-| custom pass_mark | |
-| empty list | |
-| text value | |
-| below 0 / above 100 | |
+| one mark |yes ([75]) |
+| decimals | yes ([65.5, 72.5, 80.0])|
+| custom pass_mark |yes (pass_mark=70) |
+| empty list |	yes |
+| text value | yes ([50, "abc", 80])|
+| below 0 / above 100 | yes, two separate tests (-5 and 105)|
 
 **Do the AI's own tests pass against the AI's own code?** yes / no
 
@@ -119,19 +120,34 @@ no external libraries. Return code plus a short explanation.
 
 **The complete prompt I wrote** (one message, sent to a fresh chat):
 
-```
+You are a Python developer. Implement the function analyze_marks(marks, pass_mark=50). Return exactly one dictionary with the keys 'average', 'highest', 'lowest', and 'pass_rate'. 
 
-```
+Constraints and Validation:
+- Use no external libraries.
+- Raise ValueError explicitly if the list is empty, contains non-numeric values (e.g., strings), or contains numbers outside the 0-100 range.
+
+Logic & Ambiguities Resolved:
+- A mark is considered passing if it is >= pass_mark.
+- Round 'average' and 'pass_rate' to 2 decimal places.
+
+Example: 
+analyze_marks([40, 60, 80], 50) -> {"average": 60.0, "highest": 80, "lowest": 40, "pass_rate": 66.67}
+
+Include simple assert tests for: one mark, decimals, custom pass_mark, empty list, text value, and marks below 0 or above 100. State any assumptions in comments before the code. Do not include any extra features, CLI, or printed explanations. Return only code.
 
 **What I deliberately added that A, B and C did not have:**
 
-1.
-2.
-3.
+1. An explicit resolution of the rounding ambiguity: "Round 'average' and 'pass_rate' to 2 decimal places", plus an example showing 66.67.
+2. An explicit pass rule ("passing if >= pass_mark") under a heading "Ambiguities Resolved", instead of leaving it implicit.
+3. An explicit ban on noise: "Do not include any extra features, CLI, or printed explanations. Return only code", and assumptions moved into code comments.
+4. Tests as simple assert statements (silent unless something fails), instead of C's print-based tests.
 
 **The ambiguity I found in the specification, and how I resolved it inside Prompt D:**
 
----
+The specification gives pass_rate 66.67 for [40, 60, 80], but never says whether to round. B computed
+(2/3)*100 without rounding and returned 66.666..., which differs from the example in the third decimal.
+I resolved it in D by requiring rounding to 2 decimal places and by giving the example 66.67.
+I also had to decide that a mark equal to pass_mark passes (>=), because the case [49.5, 50] depends on it.
 
 ## 6. Test results — the evidence
 
