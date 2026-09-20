@@ -38,46 +38,53 @@ be checked:
 
 **Prompt sent** (should be exactly one sentence):
 
-```
-
-```
+Write Python code to analyze student marks.
 
 **Assumptions the AI made that I never gave it** — list them, one per line. A data format, a pass
 threshold, a rounding rule, an input method, an invented feature all count.
 
-1.
-2.
-3.
+1. Marks arrive as one comma-separated string, hardcoded in the script (raw_marks = "88, 47, -5, ...").
+2. The pass threshold of 50 is hardcoded.
+3. Invalid values (-5, 101, "abc", empty) are silently skipped with except: pass instead of raising an error.
+4. Results are printed with print(), not returned from a function.
+5. Rounding to 2 decimals happens only in the printed output.
+6. Unrequested extras: number of students, number of passed students, "Expected Output" and a function table.
 
 **Questions it should have asked and did not:**
 
-1.
-2.
+1. What should happen with invalid input: skip it or raise an error?
+2. Should the result be a function's return value or printed output, and where do the marks come from?
 
 **Is the function named `analyze_marks` with the required signature?** yes / no — if no, what is it
 called:
+no — there is no function at all; the code runs at top level
 
 **First impression before testing** (one sentence — you will compare this with section 6 later):
 
----
+It looks like a working demo script, but it is not a reusable function and will probably fail the harness.
 
 ## 3. Prompt B — structured context
 
 **Prompt sent** (paste it in full, including any substitutions):
 
-```
-
-```
+You are a Python developer. Implement analyze_marks(marks, pass_mark=50). Return
+average, highest, lowest, and pass_rate in a dictionary. Accept marks from 0 to 100;
+raise ValueError for an empty list, non-numeric values, or out-of-range values. Use
+no external libraries. Return code plus a short explanation.
 
 **What B fixed compared to A:**
 
-1.
-2.
+1. A had no function at all (top-level script). B defines analyze_marks(marks, pass_mark=50) with the required name and signature.
+2. A printed results and hardcoded the data and the threshold 50. B returns a dictionary with the exact keys average, highest, lowest, pass_rate, and pass_mark is a parameter.
+3. A silently skipped invalid values (except: pass). B raises ValueError for an empty list, non-numeric values (including bool) and values outside 0-100.
+4. B uses >= pass_mark, so a mark equal to the pass mark passes.
 
 **What B still leaves open:**
 
-1.
-2.
+1. Rounding of pass_rate: B returns the raw value (66.666... for [40, 60, 80]), while the spec example says 66.67. The prompt never says whether to round.
+2. No tests were written, and no assumptions were stated before the code (only a short explanation after it).
+3. Unrequested noise: example usage with print() at module level, which runs on import.
+4. pass_mark itself is not validated (for example a text pass_mark would raise TypeError, not ValueError).
 
 ---
 
