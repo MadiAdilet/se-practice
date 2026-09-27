@@ -1,0 +1,49 @@
+# week-03/submission.yml — your declaration for this lab.
+#
+# Facts only. Every explanation goes in lab-report.md; nothing here repeats prose.
+# Fill every value. Check it before you push:
+#
+#     python tests/validate_submission.py
+#
+# The validator checks shape, never quality. A green run is the floor, not the grade.
+# If you cannot run Python, fill the file by hand against the comments — a malformed
+# file costs you nothing if the content is there.
+
+schema: 1
+week: "03"
+
+student:
+  name: Madi Adilet
+  student_id: 24B031062
+  github: MadiAdilet
+
+assistant:
+  tool: Claude
+  model: Claude Sonnet 5
+
+counts:
+  user_stories: 6
+  acceptance_criteria_sets: 3
+
+checker:
+  pass: 23
+  fail: 0
+  error: 0
+  commit: 8b72c25
+
+assumptions:
+  overlap_touching_bookings: allowed
+  exactly_two_hours: allowed
+
+traceability:
+  use_cases_not_covered: [UC-01, UC-05]
+  stories_not_traced: []
+
+review_findings:
+  - US-08 in the raw output duplicated the overlap rule as a separate story instead of a stakeholder goal; merged into US-02 as an assumption.
+  - UC-05 Review usage had no acceptance-criteria set written this round; recorded as a gap in traceability.md instead of inventing one.
+  - The raw diagram connected Student directly to UC-05 Review usage and invented a third actor connected to UC-06 Send confirmation; both associations were removed because neither is triggered by a person.
+
+honesty:
+  can_explain_everything_submitted: yes
+  ai_usage_disclosed: yes
