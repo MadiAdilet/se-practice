@@ -29,7 +29,7 @@ checker:
   pass: 23
   fail: 0
   error: 0
-  commit: 8b72c25
+  commit: 76dff5a
 
 assumptions:
   overlap_touching_bookings: allowed

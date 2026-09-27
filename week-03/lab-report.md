@@ -223,7 +223,7 @@ PASS   counts.user_stories                       6
 PASS   counts.acceptance_criteria_sets           3
 PASS   checker                                   23 PASS · 0 FAIL · 0ERROR
 NOTE   checker                                   you are claiming a clean run — it will be re-run at your commit, so make sure it is true
-PASS   checker.commit                            8b72c25
+PASS   checker.commit                            76dff5a
 PASS   assumptions.overlap_touching_bookings     allowed
 PASS   assumptions.exactly_two_hours             allowed
 PASS   traceability.use_cases_not_covered        UC-01, UC-05
@@ -238,7 +238,7 @@ PASS   honesty.ai_usage_disclosed                yes
 21 PASS · 0 FAIL · 0 ERROR · 1 note
 Shape is fine. This says nothing about whether the work is good.
 
-Commit these numbers were produced at (`git rev-parse --short HEAD`):8b72c25
+Commit these numbers were produced at (`git rev-parse --short HEAD`):76dff5a
 
 **Every FAIL, one line each: what it is and what you decided to do about it.** None this run.
 
