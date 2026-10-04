@@ -239,7 +239,7 @@ PASS   honesty.ai_usage_disclosed                yes
 Shape is fine. This says nothing about whether the work is good.
 
 Commit these numbers were produced at (`git rev-parse --short HEAD`):76dff5a
-
+    
 **Every FAIL, one line each: what it is and what you decided to do about it.** None this run.
 
 **Did you run the checks by hand instead of with Python?** No, Python was available and both checkers ran successfully.

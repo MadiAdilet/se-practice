@@ -1,0 +1,47 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+title Smart Campus - Room Booking: Use Cases
+
+actor "Student" as student
+actor "Administrator" as admin
+
+rectangle "Smart Campus System" {
+    usecase "View Room Availability" as UC_View
+    usecase "Book Room" as UC_Book
+    usecase "Cancel Own Booking" as UC_Cancel
+    usecase "Block Room" as UC_Block
+    usecase "Unblock Room" as UC_Unblock
+    usecase "Review Usage" as UC_Review
+}
+
+student -- UC_View
+student -- UC_Book
+student -- UC_Cancel
+admin -- UC_Block
+admin -- UC_Unblock
+admin -- UC_Review
+
+note right of UC_Book
+  Rules checked inside this goal:
+  R1 future start, 0 < duration <= 2h
+  R2 no overlap with active bookings
+  R3 blocked room rejects new booking
+  Outcome: R4 successful booking
+  produces a confirmation
+end note
+
+note right of UC_Cancel
+  A student may cancel only
+  their own bookings
+end note
+
+note as Assumptions
+  Assumptions:
+  A1 touching bookings (12:00 end,
+  12:00 start) do NOT overlap
+  A2 blocking a room does not cancel
+  existing bookings, it only stops
+  new ones (R3)
+end note
+@enduml
