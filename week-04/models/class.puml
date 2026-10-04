@@ -1,0 +1,55 @@
+@startuml
+skinparam classAttributeIconSize 0
+title Smart Campus - Domain Model
+
+class Student {
+    - studentId: String
+    - name: String
+}
+
+class Room {
+    - roomId: String
+    - isBlocked: Boolean
+    + block(): void
+    + unblock(): void
+    + isAvailable(start: DateTime, end: DateTime): Boolean
+}
+
+class Booking {
+    - bookingId: String
+    - startTime: DateTime
+    - endTime: DateTime
+    - status: BookingStatus
+    + cancel(): void
+}
+
+class Confirmation {
+    - confirmationId: String
+    - issuedAt: DateTime
+}
+
+enum BookingStatus {
+    ACTIVE
+    CANCELLED
+}
+
+Student "1" -- "0..*" Booking : makes >
+Room "1" -- "0..*" Booking : is reserved by >
+Booking "1" -- "1" Confirmation : produces >
+
+note right of Booking
+  R1: startTime in the future,
+  0 < endTime - startTime <= 2 hours
+  R2: two ACTIVE bookings of the same Room
+  must not overlap (not a multiplicity)
+  R3: a Room with isBlocked = true
+  accepts no new Booking
+end note
+
+note bottom of Room
+  A1: touching bookings (12:00 end,
+  12:00 start) do NOT overlap
+  A2: blocking a Room keeps its existing
+  bookings; it only stops new ones (R3)
+end note
+@enduml

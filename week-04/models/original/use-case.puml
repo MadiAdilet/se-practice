@@ -1,0 +1,50 @@
+@startuml
+
+skinparam actorStyle awesome
+skinparam packageStyle rectangle
+
+title Use Case Diagram: Smart Campus Room Booking System
+
+actor "Student" as student
+actor "Administrator" as admin
+
+package "Smart Campus System" {
+    usecase "View Room Availability" as UC_View
+    usecase "Book a Room" as UC_Book
+    usecase "Cancel Booking" as UC_Cancel
+    usecase "Block/Unblock Room" as UC_ManageBlock
+    usecase "Review Usage" as UC_Review
+    usecase "Validate Booking Details" as UC_Validate
+    usecase "Send Confirmation" as UC_Confirm
+}
+
+' Associations for Student
+student -- UC_View
+student -- UC_Book
+student -- UC_Cancel
+
+' Associations for Administrator
+admin -- UC_ManageBlock
+admin -- UC_Review
+
+' Include relationship: Booking always validates details
+UC_Book .> UC_Validate : <<include>>
+
+' Include relationship: Successful booking triggers confirmation
+UC_Book .> UC_Confirm : <<include>>
+
+' Note regarding constraints (R1, R2, R3, R4)
+note right of UC_Book
+  Constraints enforced during validation:
+  R1: Future start, duration 0 < d <= 2h
+  R2: No overlap with active bookings
+  R3: Room must not be blocked
+  R4: Produces confirmation
+end note
+
+note bottom of student
+  Assumption: Student can only
+  cancel their own bookings.
+end note
+
+@enduml
