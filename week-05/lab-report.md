@@ -29,7 +29,90 @@ grader find your answers by them. Add rows to any table; never remove its header
 **The assistant's plan, pasted unedited:**
 
 ```text
-(paste here)
+Implementation Plan for can_book
+Order of Checks
+
+To evaluate whether a booking request is valid according to the acceptance criteria (AC1–AC4), the function will perform the following checks sequentially and return False as soon as any check fails:
+
+    Blocked Room Check (AC3):
+
+        Check if blocked is True. If True, return False immediately.
+
+    Time Range & Progression Check (AC1):
+
+        Check if start and end satisfy 0≤start<end≤1440.
+
+        Check if start>now.
+
+        If any condition fails, return False.
+
+    Duration Check (AC2):
+
+        Calculate duration=end−start.
+
+        Check if duration≤120. If false, return False.
+
+    Overlap Check (AC4):
+
+        Iterate through each (b_start, b_end) tuple in existing.
+
+        Since intervals are half-open [start,end), two intervals [s1​,e1​) and [s2​,e2​) overlap if and only if max(s1​,s2​)<min(e1​,e2​).
+
+        Alternatively, check if the requested interval is strictly before or strictly after the existing booking: end≤b_start or start≥b_end. If neither condition holds, there is an overlap.
+
+        Return False on the first detected overlap.
+
+    Decision (AC5):
+
+        If all checks pass, return True.
+
+Key Assumptions
+
+    Data Types: start, end, and now are integers representing minutes after midnight. blocked is a boolean. existing is an iterable (e.g., list or set) of 2-tuples containing integer bounds (b_start, b_end).
+
+    Pre-validated Input Bounds: now is guaranteed to be in [0,1439] as per the contract. Existing bookings in existing are pre-validated valid tuples for the current room.
+
+    Side-Effect Safety: The function strictly reads inputs without mutating existing or any other passed argument.
+
+    Single-Day Boundary: Midnight corresponds to minute 0; the maximum end bound is minute 1440 (24:00).
+
+Suggested Boundary Cases
+
+To thoroughly test the implementation against edge cases, consider the following test scenarios:
+
+    AC1 Boundaries (Time & Now):
+
+        start=now: Edge case for strict inequality (start>now). Must return False.
+
+        start=now+1: Minimal valid future start time.
+
+        start=0, end=120 with now=0: Must return False (since 0≯0).
+
+        end=1440: Upper bound limit. Should pass if duration and time checks hold.
+
+        end=1441: Exceeds upper limit. Must return False.
+
+        start=end: Zero duration. Must return False.
+
+    AC2 Boundaries (Duration):
+
+        end−start=120: Maximum allowed duration boundary. Must return True.
+
+        end−start=121: One minute over limit. Must return False.
+
+    AC3 Boundaries (Blocked Room):
+
+        blocked = True with otherwise fully valid inputs. Must return False.
+
+    AC4 Boundaries (Endpoint Touching & Overlap):
+
+        Touching Endpoints (Allowed): Requested [600,660) with existing [540,600) (start=b_end) or existing [660,720) (end=b_start). Must return True.
+
+        Partial Overlap: Requested [600,660) with existing [570,630). Must return False.
+
+        Enclosure / Sub-interval: Requested [600,660) with existing [610,650) or existing [590,670). Must return False.
+
+        Empty existing list: existing = []. Should handle gracefully and return True.
 ```
 
 **What the plan invented or changed.** One row for every rule in the plan that is not in the
@@ -38,12 +121,21 @@ row saying which lines of the plan you checked against which AC.
 
 | # | What the plan said | What the contract or the AC says | What I did |
 | --- | --- | --- | --- |
-| 1 | | | |
+| 1 | Checks 1-5 (blocked, AC1 range and start > now, AC2 duration, AC4 overlap, final True) | AC3, AC1, AC2, AC4, AC5: the same four conditions, no extra rule | Compared every step with AC1-AC5; nothing invented, nothing to drop |
+| 2 | Order of checks: blocked first, then AC1, AC2, AC4 | The spec lists AC1-AC4 in a different order but does not require any order; AC5 makes them a conjunction | Kept: the order does not change the result |
+| 3 | "strictly before or strictly after" the existing booking | AC4: touching endpoints are allowed, so the comparison is end <= b_start or start >= b_end, not strict | Kept the formula (correct), noted the wording as imprecise |
 
 **Boundary cases the assistant suggested that I kept as tests:**
 
 -
-
+- start = now (must be False) and start = now + 1
+- end = 1440 and end = 1441
+- start = end (zero length)
+- duration 120 (True) and 121 (False)
+- blocked = True with otherwise valid input
+- touching on both sides: existing [540,600) and [660,720) against [600,660) (True)
+- partial overlap, request inside the existing booking, request containing it (False)
+- empty existing
 ---
 
 ## 3. Task 2 — the first version (v1), read before it was run
