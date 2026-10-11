@@ -1,0 +1,30 @@
+@startuml
+skinparam defaultTextAlignment center
+
+title Activity Diagram: Book a Room (Smart Campus)
+
+start
+
+:Student submits room booking request\n(Room, Start Time, Duration);
+
+if (R1: Is start time in the future\nAND 0 < duration <= 2 hours?) then [no]
+    :Reject Booking\n(Invalid time range or duration);
+    stop
+else [yes]
+    if (R3: Is room blocked?) then [yes]
+        :Reject Booking\n(Room is currently blocked);
+        stop
+    else [no]
+        if (R2: Do active bookings for\nthis room overlap?) then [yes]
+            :Reject Booking\n(Time slot overlaps with existing booking);
+            stop
+        else [no]
+            :Create Booking Record\n(Status: ACTIVE);
+            :Generate Confirmation (R4);
+            :Display Success & Confirmation Details;
+            stop
+        endif
+    endif
+endif
+
+@enduml

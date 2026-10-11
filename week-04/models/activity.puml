@@ -1,0 +1,36 @@
+@startuml
+title Activity Diagram: Book Room (Smart Campus)
+
+start
+
+:Receive booking request\n(room, start time, end time);
+note right
+  A1: touching bookings (12:00 end,
+  12:00 start) do NOT overlap
+  A2: blocking a room keeps its existing
+  bookings; it only stops new ones
+end note
+
+if (Start in future and 0 < duration <= 2 h? (R1)) then ([yes])
+else ([no])
+  :Reject booking: invalid time range;
+  stop
+endif
+
+if (Room blocked? (R3)) then ([no])
+else ([yes])
+  :Reject booking: room is blocked;
+  stop
+endif
+
+if (Overlaps an ACTIVE booking of this room? (R2)) then ([no])
+else ([yes])
+  :Reject booking: time slot taken;
+  stop
+endif
+
+:Create Booking (status ACTIVE);
+:Issue Confirmation (R4);
+:Show confirmation to student;
+stop
+@enduml
