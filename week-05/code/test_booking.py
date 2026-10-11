@@ -111,7 +111,10 @@ class BookingTests(unittest.TestCase):
         before = list(existing)
         can_book(660, 700, 540, False, existing)
         self.assertEqual(existing, before)
-
+    def test_start_equal_to_now_at_end_of_day_is_rejected(self):
+        # AC1: start must be > now; 1439 is not > 1439
+        result = can_book(1439, 1440, 1439, False, [])
+        self.assertIs(result, False)
 
 if __name__ == "__main__":
     unittest.main()

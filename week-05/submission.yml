@@ -45,7 +45,7 @@ checker:
 assumptions:
   # The contract says times are integers and stops there. Decide, declare, and defend it in lab-report.md §9.2.
   # Any answer is acceptable. Not deciding is not.
-  non_integer_time:    # return-false | raise-error | not-handled | refused-by-compiler
+  non_integer_time:   not-handled # return-false | raise-error | not-handled | refused-by-compiler
                        # what YOUR can_book does for start=600.5 or start="600"
 
 carried:
