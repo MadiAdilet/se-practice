@@ -26,7 +26,7 @@ decisions:
   reject: 0
 
 checker:
-  commit: ""
+  commit: bfb36cd
   pass: 24
   fail: 0
   error: 0
