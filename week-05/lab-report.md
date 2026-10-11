@@ -140,21 +140,23 @@ row saying which lines of the plan you checked against which AC.
 
 ## 3. Task 2 — the first version (v1), read before it was run
 
-v1 is saved as `code/original/booking_v1.<ext>`, exactly as the assistant returned it: yes / no
+v1 is saved as `code/original/booking_v1.py`, exactly as the assistant returned it: yes
 
 **AC map.** One row per condition in v1. Quote the line.
 
 | # | Line in v1 | AC it implements | Correct as written? If not, why |
 | --- | --- | --- | --- |
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
+| 1 | `if blocked: return False` | AC3 (the room is not blocked) | Yes. A blocked room returns False whatever the other inputs are, which is what AC3 and AC5 ask for. |
+| 2 | `if not (0 <= start < end <= 1440 and start > now): return False` | AC1 (0 <= start < end <= 1440, and start > now) | Yes. It is the AC1 text word for word. `start == now` gives `start > now` False, so it is rejected; `end == 1440` is allowed; `start == end` and `start > end` fail `start < end`. |
+| 3 | `if (end - start) > 120: return False` | AC2 (duration at most 120) | Yes. Duration 120 gives `120 > 120` False, so it is allowed; 121 is rejected. |
+| 4 | `if b_start < end and start < b_end: return False` (inside `for b_start, b_end in existing`) | AC4 (no overlap, touching allowed) | Yes. Overlap needs both strict inequalities. Request (660, 720) vs (600, 660): `600 < 720` True, `660 < 660` False, so no overlap (touching allowed). Request (630, 690) vs (600, 660): `600 < 690` and `630 < 660` both True, overlap. Containing (570, 690) and inside (615, 645) vs (600, 660) are also both True, overlap. |
+| 5 | `return True` (last line) | AC5 (True only when AC1-AC4 hold) | Yes. It is reached only if no earlier check returned False. The results are the literals `True` and `False`, so the type is bool. The loop only reads `existing`, so the list is not changed. |
 
 **Anything in v1 that no AC asks for** (extra validation, a buffer between bookings, logging,
 saving the booking, a different return type):
 
--
+- Nothing found. I looked for a gap between bookings, sorting or storing `existing`, type checks, exceptions, logging and a non-bool return. None of them are in the code. The docstring mentions `existing` as an "iterable", while the contract speaks of tuples; that does not change the behaviour.
+- What I expected to fail: by reading, nothing. I expected v1 to satisfy AC1-AC5. Not verified against non-integer times (`600.5`, `"600"`), because the contract does not cover them; this goes to §9.2.
 
 ---
 
