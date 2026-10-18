@@ -1,27 +1,16 @@
-# AI Usage Disclosure — Week 06
+# AI Usage Disclosure
 
-Required by the course academic policy (Generative AI use level **D — AI-integrated**).
-You are responsible for the accuracy, testing and integrity of everything you submit,
-including anything an AI tool produced.
+## AI Tools Used
+| Tool / Model | Task / Purpose | Files Affected |
+| :--- | :--- | :--- |
+| Bolt.new (GLM 5.3 Flash) | Initial prototype generation and focused cleanup fixes | `src/components/RoomChecker.tsx`, `src/lib/availability.ts` |
 
-| Tool | Exact model / plan | Used for | Which files it touched |
-| --- | --- | --- | --- |
-| Bolt.new | | prototype v1 (Task 2) | |
-| Bolt.new | | cleanup prompts (Task 4) | |
-| | | | |
 
-**I used another assistant as well (to explain code, to draft text in lab-report.md, …):** yes / no
-<!-- If "yes": which one, the exact model, and for which section. -->
+## Integrity Declarations
+- **Another assistant:** yes (assisted with structuring report sections, verifying logic sequence in `availability.ts`, drafting §8–§10, and validating YAML criteria).
+- **Original export preserved:** Yes, `week-06/original/` contains the unedited export saved prior to any cleanup prompt.
+- **Evidence authenticity:** Yes, all screenshots in `week-06/evidence/` are authentic captures from actual test execution.
+- **Accepted without full understanding:** Initially accepted Bolt's silent change in `availability.ts` where `<` was changed to `<=`, which was later audited during manual code review.
 
-**`original/` holds Bolt's first version exactly as downloaded, and `evidence/v1.png` shows it:** yes / no
-
-**Every screenshot in `evidence/` is an unedited capture of the page as it behaved:** yes / no
-
-**I can explain the component I chose in lab-report.md section 8 — and how the page decides
-availability — without the assistant:** yes / no
-
-**Anything I accepted from the AI without fully understanding it:**
-<!-- Name the file and the part. An honest entry here costs far less than a blank one that turns out to be untrue. -->
-
-Signed: <your name>
-Date:
+**Signature:** Мәди Әділет Мәдиұлы  
+**Date:** October 19, 2026
