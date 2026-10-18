@@ -40,7 +40,6 @@ Build a small responsive Smart Campus Room Availability Checker. Requirements: A
 
 ---
 
-## 3. Task 2 — prototype v1
 
 ## 3. Task 2 — prototype v1
 
@@ -61,10 +60,11 @@ Main files/components created:
 
 **What v1 does — one line per thing that works, or visibly does not:**
 
-- works: a room selector shows the room status, capacity and its existing bookings (for example 10:00–11:00).
-- works: there are input fields for Current Time, Requested Start Time and Requested End Time.
-- works: a toggle sets the room to Blocked or Unblocked.
-- works: submitting the form shows a colour-coded Available / Unavailable banner with an explanation.
+- works: a room selector shows the building, capacity, status (Open) and the existing bookings of the selected room.
+- works: Start time and End time inputs, a Check availability button and a Reset button.
+- works: submitting shows a red Unavailable banner with a reason.
+- visibly missing: there is no Current Time input; the page shows the real clock ("Current time: 17:47") as text.
+- visibly missing: there is no way to block a room; the status is only displayed ("Open").
 - visibly broken: the first preview was blank (a Vite bundling error with `lucide-react`); one repair prompt fixed it, and the result is v1.
 
 **Repair prompt** (only if the first build did not run — the deck allows one, then the result is
