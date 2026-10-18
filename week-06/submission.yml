@@ -1,0 +1,35 @@
+schema: 1
+week: "06"
+student:
+  name: "Мәди Әділет Мәдиұлы"
+  student_id: "24B031062"
+  github: "MadiAdilet"
+assistant:
+  tool: "Bolt.new"
+  model: "GLM 5.3 Flash"
+  fallback_reason: "none"
+bolt:
+  project_url: "https://bolt.new/p/72144946"
+counts:
+  issues: 3
+  cleanup_prompts: 3
+  change_log_rows: 3
+  v1_matches: 1
+  final_matches: 9
+assumptions:
+  end_of_day: "not-expressible"
+review_findings:
+  - "AC1 required a supplied current time parameter, but v1 bound to system new Date(), making T1-T6 untestable until an input was added."
+  - "AC4 touching boundaries (11:00-12:00 after 10:00-11:00) were correctly supported by strict inequality logic in availability.ts."
+  - "Bolt silently changed start < nowMinutes to start <= nowMinutes in availability.ts during a cleanup prompt without mentioning it in its summary; AC1/T6 required it, I found it by diffing original/ and prototype/."
+honesty:
+  v1_export_unedited: yes
+  screenshots_unedited: yes
+  can_explain_component_without_ai: yes
+  ai_usage_disclosed: yes
+checker:
+  pass: 26
+  fail: 1
+  error: 0
+  commit: d5d839f
+  known_fails: [P3]
