@@ -107,7 +107,7 @@ log a justified cleanup that preserves behaviour. Save a screenshot of each as
 | --- | --- | --- | --- | --- |
 | 1 | Current time cannot be supplied (AC1) | Steps: open the page, select Aurora Hall, enter 11:00–12:00, press Check availability. Expected: I can set the current time to 09:00 and get Available (AC1 "supplied current time", AC4). Observed: the current time is taken from the real system clock (`new Date()`, shown as text "Current time: 22:07"), there is no input, so every request before 22:07 gets "The start time must be later than the current time" and T1–T6, T8, T9 are Not testable. Screenshot: `evidence/issue-1.png`. | High | Fix |
 | 2 | Unclear validation message for reversed times (AC6) | Steps: select Aurora Hall, set Start time to 12:00 and End time to 11:00, press Check availability. Expected: a clear validation message explaining that start time must be strictly before end time (AC1, AC6). Observed: the page displays "Enter a valid time range within the same day (00:00–24:00)", which does not explain that start is after end and references 24:00 which HTML time inputs cannot express. Screenshot: `evidence/issue-2.png`. | Medium | Fix |
-
+| 3 | Start equal to the current time is accepted (AC1) | Steps: set Current time to 09:00, select Beacon Room, enter Start 09:00 and End 09:30, press Check availability. Expected: Unavailable, because AC1 requires the start to be after the supplied current time (T6). Observed: Available, "Beacon Room is free from 09:00 to 09:30." Screenshot: `evidence/issue-3.png`. | High | Fix |
 ---
 
 ## 6. Task 4 — cleanup with focused prompts
@@ -134,9 +134,9 @@ the AC (or the scope) that justifies it.
 
 | # | What Bolt changed or suggested | accept / reject | Reason — cite the AC or the scope | Retest: which cases, result |
 | --- | --- | --- | --- | --- |
-| 1 | | accept / reject | | |
-| 2 | | accept / reject | | |
-
+| 1 | Added an editable "Current time" input at the top of the form in `RoomChecker.tsx` | accept | AC1 needs a supplied current time; it was read-only. Retest T1 with now 09:00 shows Available. No new feature beyond AC1. | T1: ___; T1–T9 rerun: ___ |
+| 2 | The availability check now uses the entered value instead of the system clock | accept | AC1 "after the supplied current time"; AC2–AC5 unchanged (overlap, blocked, 120 min, bookings read-only). | T2–T5, T7: ___ |
+| 3 | Removed the now unused `nowToMinutes` helper | accept / reject | Dead code after change 2, no effect on AC1–AC6. Accept only if the build and all nine cases still behave the same. | build OK, T1–T9 unchanged: ___ |
 ---
 
 ## 7. Change log — v1 to final
