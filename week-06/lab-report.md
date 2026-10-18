@@ -28,8 +28,8 @@ Fill the first three columns now; fill the last one after Task 3.
 
 | # | What I expect to go wrong | AC it concerns | Was I right? (after Task 3) |
 | --- | --- | --- | --- |
-| 1 | I expect v1 to reject a valid candidate interval (11:00-12:00) when an existing booking ends at 11:00 (10:00-11:00) because the boundary overlap check will incorrectly use `<=` instead of strictly `<`. | AC4 | |
-| 2 | I expect v1 to alter state by adding the checked interval directly to the existing bookings array when pressing the "Check Availability" button, causing a second check for the exact same time slot (T8) to mistakenly return "Unavailable". | AC5 | |
+| 1 | I expect v1 to reject a valid candidate interval (11:00-12:00) when an existing booking ends at 11:00 (10:00-11:00) because the boundary overlap check will incorrectly use `<=` instead of strictly `<`. | AC4 | No. v1’s overlap check uses strict inequalities, so touching is allowed; T1 was Not testable for a different reason (the current time cannot be set). |
+| 2 | I expect v1 to alter state by adding the checked interval directly to the existing bookings array when pressing the "Check Availability" button, causing a second check for the exact same time slot (T8) to mistakenly return "Unavailable". | AC5 | No. v1 did not mutate room bookings state, but T8 was Not testable on v1 because the current time is taken from the real system clock and cannot be overridden. |
 
 **The initial prompt exactly as I sent it** — the deck's prompt with AC1–AC6 pasted in place of
 `[paste AC1–AC6]`, nothing else changed:
@@ -39,7 +39,6 @@ Build a small responsive Smart Campus Room Availability Checker. Requirements: A
 ```
 
 ---
-
 
 ## 3. Task 2 — prototype v1
 
@@ -60,12 +59,12 @@ Main files/components created:
 
 **What v1 does — one line per thing that works, or visibly does not:**
 
-- works: a room selector shows the building, capacity, status (Open) and the existing bookings of the selected room.
-- works: Start time and End time inputs, a Check availability button and a Reset button.
-- works: submitting shows a red Unavailable banner with a reason.
-- visibly missing: there is no Current Time input; the page shows the real clock ("Current time: 17:47") as text.
-- visibly missing: there is no way to block a room; the status is only displayed ("Open").
-- visibly broken: the first preview was blank (a Vite bundling error with `lucide-react`); one repair prompt fixed it, and the result is v1.
+- works: a room selector shows the building, capacity, status and the existing bookings of the selected room (for example 09:00–10:00 and 12:00–13:00 for Aurora Hall).
+- works: the Room dropdown marks Cedar Studio as BLOCKED and shows "Status: Blocked" when it is selected.
+- works: submitting the form shows a colour-coded Available / Unavailable banner with a reason.
+- visibly missing: there is no control to change a room's status; blocked rooms come only from the sample data.
+- visibly unclear: for 12:00–11:00 the page says "Enter a valid time range within the same day (00:00–24:00)", which does not say that the end is before the start.
+- visibly broken: the current time is taken from the real system clock (`new Date()`, shown as text) with no input, so any request before the real time is rejected and T1–T6, T8 and T9 are Not testable.
 
 **Repair prompt** (only if the first build did not run — the deck allows one, then the result is
 v1). Leave empty if you did not need it:
@@ -85,15 +84,15 @@ no way to set up the case). Save each final run as `evidence/final-T<n>.png`.
 
 | # | Case | What you set up and request | Expected | AC | Result on v1 | Result on final | Final screenshot |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| T1 | Touching | 11:00–12:00 | Available | AC4 | Available / Unavailable / Not testable | Available / Unavailable / Not testable | final-T1.png |
-| T2 | Overlap | 10:30–11:30 | Unavailable | AC4 | Available / Unavailable / Not testable | Available / Unavailable / Not testable | final-T2.png |
-| T3 | Blocked | 11:00–12:00, room blocked | Unavailable | AC3 | Available / Unavailable / Not testable | Available / Unavailable / Not testable | final-T3.png |
-| T4 | Exactly 2 hours | 12:00–14:00 | Available | AC2 | Available / Unavailable / Not testable | Available / Unavailable / Not testable | final-T4.png |
-| T5 | Over 2 hours | 12:00–14:01 | Unavailable | AC2 | Available / Unavailable / Not testable | Available / Unavailable / Not testable | final-T5.png |
-| T6 | Starts now | 09:00–09:30 (current time 09:00) | Unavailable | AC1 | Available / Unavailable / Not testable | Available / Unavailable / Not testable | final-T6.png |
-| T7 | Reversed times | 12:00–11:00, and the page says why | Unavailable | AC1, AC6 | Available / Unavailable / Not testable | Available / Unavailable / Not testable | final-T7.png |
-| T8 | Same check twice | T1, then T1 again without reloading | Available | AC5 | Available / Unavailable / Not testable | Available / Unavailable / Not testable | final-T8.png |
-| T9 | Narrow screen | T1 at about 375 px wide | Available | AC6 | Available / Unavailable / Not testable | Available / Unavailable / Not testable | final-T9.png |
+| T1 | Touching | 11:00–12:00 | Available | AC4 | Not testable | Available / Unavailable / Not testable | final-T1.png |
+| T2 | Overlap | 10:30–11:30 | Unavailable | AC4 | Not testable | Available / Unavailable / Not testable | final-T2.png |
+| T3 | Blocked | 11:00–12:00, room blocked | Unavailable | AC3 | Not testable | Available / Unavailable / Not testable | final-T3.png |
+| T4 | Exactly 2 hours | 12:00–14:00 | Available | AC2 | Not testable | Available / Unavailable / Not testable | final-T4.png |
+| T5 | Over 2 hours | 12:00–14:01 | Unavailable | AC2 | Not testable | Available / Unavailable / Not testable | final-T5.png |
+| T6 | Starts now | 09:00–09:30 (current time 09:00) | Unavailable | AC1 | Not testable | Available / Unavailable / Not testable | final-T6.png |
+| T7 | Reversed times | 12:00–11:00, and the page says why | Unavailable | AC1, AC6 | Unavailable | Available / Unavailable / Not testable | final-T7.png |
+| T8 | Same check twice | T1, then T1 again without reloading | Available | AC5 | Not testable | Available / Unavailable / Not testable | final-T8.png |
+| T9 | Narrow screen | T1 at about 375 px wide | Available | AC6 | Not testable | Available / Unavailable / Not testable | final-T9.png |
 
 ---
 
@@ -106,8 +105,8 @@ log a justified cleanup that preserves behaviour. Save a screenshot of each as
 
 | # | Issue | Evidence: steps → expected → observed | Priority | Decision |
 | --- | --- | --- | --- | --- |
-| 1 | | | High / Medium / Low | Fix / Reject / Defer |
-| 2 | | | High / Medium / Low | Fix / Reject / Defer |
+| 1 | Current time cannot be supplied (AC1) | Steps: open the page, select Aurora Hall, enter 11:00–12:00, press Check availability. Expected: I can set the current time to 09:00 and get Available (AC1 "supplied current time", AC4). Observed: the current time is taken from the real system clock (`new Date()`, shown as text "Current time: 22:07"), there is no input, so every request before 22:07 gets "The start time must be later than the current time" and T1–T6, T8, T9 are Not testable. Screenshot: `evidence/issue-1.png`. | High | Fix |
+| 2 | Unclear validation message for reversed times (AC6) | Steps: select Aurora Hall, set Start time to 12:00 and End time to 11:00, press Check availability. Expected: a clear validation message explaining that start time must be strictly before end time (AC1, AC6). Observed: the page displays "Enter a valid time range within the same day (00:00–24:00)", which does not explain that start is after end and references 24:00 which HTML time inputs cannot express. Screenshot: `evidence/issue-2.png`. | Medium | Fix |
 
 ---
 
