@@ -42,23 +42,36 @@ Build a small responsive Smart Campus Room Availability Checker. Requirements: A
 
 ## 3. Task 2 — prototype v1
 
+## 3. Task 2 — prototype v1
+
 v1 export saved in `original/` and screenshot saved as `evidence/v1.png` **before** any cleanup
-prompt: yes / no
+prompt: yes
 
 **Bolt's list of the files/components it created, pasted unedited:**
 
 ```text
-(paste here)
+Main files/components created:
+
+* `src/lib/types.ts` — shared types (Room, Booking, AvailabilityDecision)
+* `src/lib/sampleData.ts` — fictional rooms and existing bookings
+* `src/lib/availability.ts` — pure availability logic enforcing AC1–AC4
+* `src/components/RoomChecker.tsx` — the full responsive UI (form, room details, existing bookings list, decision banner) covering AC5–AC6
+* `src/App.tsx` — renders the checker
 ```
 
 **What v1 does — one line per thing that works, or visibly does not:**
 
--
+- works: a room selector shows the room status, capacity and its existing bookings (for example 10:00–11:00).
+- works: there are input fields for Current Time, Requested Start Time and Requested End Time.
+- works: a toggle sets the room to Blocked or Unblocked.
+- works: submitting the form shows a colour-coded Available / Unavailable banner with an explanation.
+- visibly broken: the first preview was blank (a Vite bundling error with `lucide-react`); one repair prompt fixed it, and the result is v1.
 
 **Repair prompt** (only if the first build did not run — the deck allows one, then the result is
 v1). Leave empty if you did not need it:
 
 ```text
+The preview is blank. Fix the error so the page renders. Do not change the requirements or add features.
 ```
 
 ---
