@@ -1,0 +1,30 @@
+@startuml
+autonumber
+actor Student
+participant "CatalogController" as Catalog
+participant "RegistrationService" as Service
+participant "CourseOffering" as Offering
+participant "Enrollment" as Enrollment
+
+Student -> Catalog : browseCatalog(semester)
+Catalog --> Student : return courseList, capacity
+
+Student -> Service : register(studentId, offeringId)
+activate Service
+
+alt already enrolled
+    Service -> Offering : checkEnrollment(studentId)
+    Service --> Student : rejection("already enrolled")
+else course full
+    Service -> Offering : checkCapacity()
+    Service --> Student : rejection("course full")
+else not enrolled and places left
+    group atomic
+        Service -> Offering : recheckAvailabilityAndLock()
+        Service -> Enrollment : create(studentId, offeringId)
+        Service -> Offering : decrementCapacity()
+    end
+    Service --> Student : confirmation("registration successful")
+end
+deactivate Service
+@enduml
