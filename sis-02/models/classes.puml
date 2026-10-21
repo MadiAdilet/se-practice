@@ -1,4 +1,43 @@
-' SIS #02 — your FINAL class diagram goes here, as PlantUML (@startuml … @enduml).
-' The file is classes.puml (plural), not class.puml as in Week 04.
-' Start from the AI's original in models/original/classes.puml, apply your accepted review
-' decisions, then render it to models/img/classes.png (or .svg). README section 6.
+@startuml
+' Assumptions & Technical Lifelines Explanation:
+' 1. Student identity is supplied via authenticated session context.
+' 2. CatalogController and RegistrationService coordinate registration workflows and atomic operations.
+
+class Student {
+  +studentId: String
+  +name: String
+}
+
+class Course {
+  +code: String
+  +title: String
+}
+
+class CourseOffering {
+  +offeringId: String
+  +semester: String
+  +section: String
+  +capacity: int
+  +getAvailablePlaces(): int
+}
+
+class Enrollment {
+  +enrollmentId: String
+  +enrolledAt: DateTime
+}
+
+Student "1" -- "0..*" Enrollment : holds >
+CourseOffering "1" -- "0..*" Enrollment : has >
+Course "1" -- "0..*" CourseOffering : includes >
+
+note right of CourseOffering
+  Capacity constraint: 
+  count(Enrollment) <= capacity.
+  availablePlaces = capacity - count(Enrollment).
+end note
+
+note right of Enrollment
+  Uniqueness constraint: 
+  A student can have at most one enrollment per CourseOffering.
+end note
+@enduml
