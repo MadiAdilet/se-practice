@@ -25,7 +25,7 @@ checker:
   pass: 44
   fail: 0
   error: 0
-  commit: ✱ (git rev-parse --short HEAD)
+  commit: 0421883
 counts:
   stories: 3
   criteria: 6

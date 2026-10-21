@@ -7,7 +7,7 @@ live in `report.md`, section 11 — this file is the summary, not a second copy.
 
 | Tool | Exact model / plan | Used for | Which sections and files it touched |
 | --- | --- | --- | --- |
-| Gemini / ChatGPT | Google Gemini 1.5 Pro / GPT-4o | Generating initial UML models (Prompt B), analyzing rule violations, refactoring PlantUML code, drafting section texts, and formatting markdown tables. | `report.md` (Sections 1–11), `models/sequence.puml`, `models/classes.puml`, `models/original/` |
+| Gemini | not displayed | Requirements drafting (Prompt A), initial UML generation (Prompt B), model critique (Prompt C), and revised UML models generation (Prompt D). | `report.md` (Sections 1–2, 11), `models/original/`, `models/sequence.puml`, `models/classes.puml` |
 
 **Three parts of this assignment are yours alone. All three were written without AI assistance:** yes
 <!-- The first scope statement and initial assumptions (report.md section 10, committed BEFORE
@@ -23,5 +23,5 @@ live in `report.md`, section 11 — this file is the summary, not a second copy.
 **Anything I accepted from the AI without fully understanding it:**
 Nothing.
 
-Signed: Madi Adilet 
+Signed: Madi Adilet
 Date: 2026-10-22
